@@ -1,57 +1,55 @@
 package com.company;
-import java.util.*;
-
-class ATM_Machine{
-    public double AccNo;
-    public String name;
-}
-class Account extends ATM_Machine{
-    public int AccBal = 5000;
-    public int fine = 200;
-
-}
-public class ATM {
-    public static void main(String[] args) {
-
-        Account ac = new Account();
+import java.util.Scanner;
+import java.util.Random;
+class Game1{
+    public int number;
+    public int inputNumber;
+    public int noOfGuesses = 0;
+    public static int Max_Guesses = 7;
+    public int getNoOfGuesses() {
+        return noOfGuesses;
+    }
+    public void setNoOfGuesses(int noOfGuesses) {
+        this.noOfGuesses = noOfGuesses;
+    }
+    Game1(){
+        Random rm = new Random();
+        this.number = rm.nextInt(100);
+    }
+    void takeUserInput(){
+        System.out.println("Guess the number");
         Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter Your Account Number:");
-        double Account = sc.nextDouble();
-        System.out.println("Enter your name");
-        String name = sc.next();
-
-        char choice;
-        do {
-            System.out.println("Facilities available\n1.Check Balance\n2.Deposit\n3.Withdraw");
-            int facility = sc.nextInt();
-
-            if (facility == 1) {
-                System.out.println("Your balance is: " + ac.AccBal);
-            }
-            if (facility == 2) {
-                System.out.println("Enter amount to deposit: ");
-                int dep = sc.nextInt();
-                ac.AccBal = ac.AccBal + dep;
-                System.out.println("Updated Balance = " + ac.AccBal);
-            }
-            if (facility == 3) {
-                System.out.println("Enter amount to withdraw: ");
-                int with = sc.nextInt();
-                if (with>ac.AccBal){
-                    System.out.println("Insufficient Balance!");
-                    return;
-                }
-                ac.AccBal = ac.AccBal - with;
-                if (ac.AccBal < 5000) {
-                    ac.AccBal = ac.AccBal - 200;
-                    System.out.println("Low Balance Charges Rs.200 is deducted");
-                    System.out.println(" Now,Balance is = " + ac.AccBal);
-                }
-            }
-            System.out.println("Do you want to continue: Y/N");
-            choice = sc.next().charAt(0);
+        inputNumber =  sc.nextInt();
+    }
+    boolean isCorrectNumber(){
+        noOfGuesses++;
+        if (inputNumber==number){
+            System.out.format("Yes you guessed it right, it was %d\nYou guessed it in %d attempts", number,noOfGuesses);
+            return true;
         }
-        while (choice == 'Y' || choice == 'N') ;
+        else if(inputNumber<number){
+            System.out.println("Too low...");
+        }
+        else if(inputNumber>number){
+            System.out.println("Too high...");
+        }
+        return false;
+    }
+
+}
+public class NumberGame {
+    public static void main(String[] args) {
+        Game g = new Game();
+        boolean b = false;
+
+        while (!b && g.getNoOfGuesses() < Game1.Max_Guesses) {
+            g.takeUserInput();
+            b = g.isCorrectNumber();
+        }
+
+        if (!b) {
+            System.out.format("Sorry, you've used all %d attempts. The number was %d.\n", Game1.Max_Guesses, g.number);
+        }
+
     }
 }
